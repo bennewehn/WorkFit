@@ -17,9 +17,9 @@ Martin Landsiedel:
 
 
 Maurice Fladung:
-  LinkedIn:
-  GitHub:
-  Email:
+  LinkedIn:   https://www.linkedin.com/in/maurice-fladung-78071a251/
+  GitHub:     https://github.com/MaFl404
+  Email:      maurice.fladung04@gmail.com
 
 
 Maximilian Trautwein:
