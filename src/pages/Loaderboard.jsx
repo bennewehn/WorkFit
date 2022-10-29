@@ -1,6 +1,7 @@
 import { IonContent, IonPage } from '@ionic/react';
 import './Home.css';
 import LoaderboardUser from '../components/LeaderBoardUser';
+import { Text } from '@chakra-ui/react';
 
 const Loaderboard = () => {
 
@@ -51,6 +52,7 @@ const Loaderboard = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
+        <Text fontSize={"4xl"} as="b" padding={"0.4em"} >Leaderboard</Text>
         {
           usersFake.map((user, idx) =>
             <LoaderboardUser key={idx} placement={idx + 1}
