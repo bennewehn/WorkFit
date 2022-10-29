@@ -13,6 +13,19 @@ $pdo = new PDO("mysql:host=$db_host_name;dbname=$database",
                 $db_password);
 
 
+require_once 'jwt_utils.php';                               // JWT Authentication
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET");
+
+$bearer_token = get_bearer_token();
+
+$is_jwt_valid = is_jwt_valid($bearer_token);
+if(!$is_jwt_valid) {
+	die(json_encode(array('error' => 'Access denied')));
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // get posted data
     $data = json_decode(file_get_contents("php://input", true));

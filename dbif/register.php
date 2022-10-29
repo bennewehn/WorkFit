@@ -1,5 +1,8 @@
 <?php
 
+// Register
+// Supply via POST: code, email, password
+
 // Connect to database
 $db_host_name = 'db5010643227.hosting-data.io';
 $database = 'dbs9005828';

@@ -1,6 +1,7 @@
 <?php
 
-// Get company Info (name, strasse, plz) from companyId
+// Check if user code exists, is valid and is enabled
+// Return valid => true/false from useremail and code
 
 // Connect to database
 $db_host_name = 'db5010643227.hosting-data.io';
@@ -29,15 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // get posted data
     $data = json_decode(file_get_contents("php://input", true));
     
-    $statement = $pdo->prepare("SELECT * FROM Company WHERE companyId = ? LIMIT 1;");
-    
-    if(strlen($row) == 0) {
-        $statement->execute(array($data->companyId));
-        $row = $statement->fetch();
-        echo json_encode(array("error" => "Invalid companyId"));
+    $statement = $pdo->prepare("SELECT Codes.enabled FROM Codes INNER JOIN User ON Codes.userId = User.eventId
+                                WHERE User.email = ? AND Codes.code = ?;");
+    $statement->execute(array($data->useremail, $data->code));
+    $row = $statement->fetch();
+    if(!isset($row['enabled']) || $row['enabled'] != 1) {
+        echo json_encode(array('valid' => false));
     }
     else {
-        echo json_encode(array("name" => $row['name'], "strasse" => $row['strasse'], "plz" => $row['plz']));
+        echo json_encode(array('valid' => true));
     }
 }
                 
