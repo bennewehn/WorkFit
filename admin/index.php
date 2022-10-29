@@ -125,6 +125,9 @@ function codes_new_checkout() {
         $lines = explode(';', $_POST['users']);
         //while (($line = fgets($handle)) !== false && $count < $_POST['number']) {
         foreach($lines as $line) {
+            if(strlen($line) == 0) {                        // Überspringe doppelte ';'
+                continue;
+            }
             $name = explode(',', $line, 2);
             $statement->execute(array(trim($name[1]), trim($name[0])));
             if($statement->rowCount() > 0) {                // User exists -> only create code
@@ -174,9 +177,6 @@ function codes_list() {
         echo $row['enabled'];
         echo   "</td>
             </tr>";
-        $comp_id = $row['companyId'];
-        $comp_name = $row['name'];
-        echo "<option value='$comp_id'>$comp_name</option>";
     }
     echo "      </table>
             </body>
@@ -197,7 +197,7 @@ function event_new_form() {
                 <h2>Neues Event anlegen</h2>
                 <form method='POST' action='index.php?a=new_event_reg'>
                     <label for='name'>Event Name: </label>
-                    <input type='text' name='username'>
+                    <input type='text' name='name'>
                     <br>
                     <label for='desc'>Event Beschreibung: </label>
                     <textarea name='desc' rows='20' cols='100'>
@@ -236,7 +236,7 @@ function event_new() {
 
     // Parameter prüfen
     if(!isset($_POST['name']) || !isset($_POST['desc'])
-       || !isset($_POST['disziplinen']) | !isset($_POST['firmen'])) {
+       || !isset($_POST['disziplin'])) {
         echo "<h2>Fehler bei der Datenübertragung</h2>
         <a href='index.php?a=event_new'>Erneut versuchen</a>";
         return false;
@@ -248,18 +248,17 @@ function event_new() {
     $event['disziplin'] = $_POST['disziplin'];
     $event['initiatorComp'] = $_SESSION['companyId'];
     $statement = $pdo->prepare("INSERT INTO Events (`name`, `description`, disciplines, initiatorComp)
-                                VALUES (:name, :description, :disziplinen, :initiatorComp)");
+                                VALUES (:name, :description, :disziplin, :initiatorComp)");
     $statement->execute($event);
 
     $event_id = $pdo->lastInsertId();
-    $eventcomp = array();
-    $eventcomp['eventId'] = $event_id;
     $statement = $pdo->prepare("INSERT INTO EventCompanies (eventId, compId, agreed)
-                                VALUES (:eventId, compId, 0)");
-    $statement->execute($_SESSION['companyId']);            // Include company itself
-    foreach($_POST['firmen'] as $firma) {
-        $eventcomp['compId'] = $firma;                      // Ein Eintrag pro Firma
-        $statement->execute($eventcomp);
+                                VALUES (:eventId, :compId, :agreed)");
+    $statement->execute(array("eventId" => $event_id, "compId" => $_SESSION['companyId'], "agreed" => 1));  // Include company itself
+    if(isset($_POST['firmen'])) {
+        foreach($_POST['firmen'] as $firma) {
+            $statement->execute(array("eventId" => $event_id, "compId" => $firma, "agreed" => 0));
+        }
     }
     return true;
 }
@@ -274,13 +273,13 @@ function event_list() {
     $statement->execute(array($_SESSION['companyId']));
     while($row = $statement->fetch()) {
         echo "<div style='border: 1px solid black'>
-                <span>Name: " . $row['name'] . "</span>
-                <span>Beschreibung: " . $row['description'] . "</span>
-                <span>Bevorzugte Disziplin: " . $row['disciplines'] . "</span>
+                <span>Name: " . $row['name'] . "</span><br>
+                <span>Beschreibung: " . $row['description'] . "</span><br>
+                <span>Bevorzugte Disziplin: " . $row['disciplines'] . "</span><br>
                 <span>Beteiligte Firmen: ";
                 $statement = $pdo->prepare("SELECT Company.*, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
                                             WHERE EventCompanies.eventId = ?;");
-                $statement->execute($row['eventId']);
+                $statement->execute(array($row['eventId']));
                 while($row2 = $statement->fetch()) {
                     if($row2['agreed']) {
                         $agreed = 'agreed';
