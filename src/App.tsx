@@ -50,52 +50,14 @@ const config: ThemeConfig = {
 const theme = extendTheme({config});
 
 const App: React.FC = () => (
-<<<<<<< HEAD
-  <ChakraProvider>
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/register">
-              <Register />
-            </Route>
-            <Route exact path="/home">
-              <Home />
-            </Route>
-            <Route exact path="/events">
-              <Events />
-            </Route>
-            <Route path="/leaderboard">
-              <Leaderboard />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/home">
-              <IonIcon icon={home} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="events" href="/events">
-              <IonIcon icon={calendarOutline} />
-              <IonLabel>Events</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="leaderboard" href="/leaderboard">
-              <IonIcon icon={trophyOutline} />
-              <IonLabel>Leaderboard</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
-  </ChakraProvider>
-=======
     <ChakraProvider theme={theme}>
         <IonApp>
             <IonReactRouter>
                 <IonTabs>
                     <IonRouterOutlet>
+                        <Route exact path="/register">
+                            <Register/>
+                        </Route>
                         <Route exact path="/home">
                             <Home/>
                         </Route>
@@ -127,6 +89,5 @@ const App: React.FC = () => (
             </IonReactRouter>
         </IonApp>
     </ChakraProvider>
->>>>>>> origin/AntonPieper/events
 );
 export default App;
