@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { home, calendarOutline, trophyOutline} from 'ionicons/icons';
+import { home, calendarOutline, trophyOutline } from 'ionicons/icons';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import Leaderboard from './pages/Loaderboard';
@@ -30,47 +30,49 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
-
 /* Theme variables */
 import './theme/variables.css';
+
+import { ChakraProvider } from '@chakra-ui/react'
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home/>
-          </Route>
-          <Route exact path="/events">
-            <Events/>
-          </Route>
-          <Route path="/leaderboard">
-            <Leaderboard/>
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="events" href="/events">
-            <IonIcon icon={calendarOutline} />
-            <IonLabel>Events</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="leaderboard" href="/leaderboard">
-            <IonIcon icon={trophyOutline} />
-            <IonLabel>Leaderboard</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+  <ChakraProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/events">
+              <Events />
+            </Route>
+            <Route path="/leaderboard">
+              <Leaderboard />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={home} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="events" href="/events">
+              <IonIcon icon={calendarOutline} />
+              <IonLabel>Events</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="leaderboard" href="/leaderboard">
+              <IonIcon icon={trophyOutline} />
+              <IonLabel>Leaderboard</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  </ChakraProvider>
 );
-
 export default App;
