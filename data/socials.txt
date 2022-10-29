@@ -29,9 +29,9 @@ Maximilian Trautwein:
 
 
 Sebastian Köhler:
-  LinkedIn:
-  GitHub:
-  Email:
+  LinkedIn: https://www.linkedin.com/in/sebastian-k%C3%B6hler-24345a255/
+  GitHub: https://github.com/koehlerse
+  Email: koehler_se@web.de
 
 
 Steffen Weiffenbach:
