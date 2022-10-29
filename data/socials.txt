@@ -5,9 +5,9 @@ Anton Pieper:
 
 
 Benedikt Wehner:
-  LinkedIn:
-  GitHub:
-  Email:
+  LinkedIn: ---
+  GitHub: https://github.com/FireBlaze9311
+  Email: benedikt.wehner@outlook.de
 
 
 Martin Landsiedel:
