@@ -1,54 +1,46 @@
 Anton Pieper:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Benedikt Wehner:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Martin Landsiedel:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Maurice Fladung:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Maximilian Trautwein:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Sebastian Köhler:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Steffen Weiffenbach:
-  Twitter:
-  Facebook:
-  Instagram:
   LinkedIn:
+  GitHub:
+  Email:
 
 
 Till Heiner:
-  Twitter: -
-  Facebook: -
-  Instagram: tillheiner
-  LinkedIn: 
+  LinkedIn: https://www.linkedin.com/in/till-heiner-816343223/
+  GitHub: https://github.com/heinertill
+  Email: heiner.till@web.de
