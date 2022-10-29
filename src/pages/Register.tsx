@@ -1,12 +1,12 @@
 import { IonContent, IonIcon } from "@ionic/react";
 import { IonPage } from "@ionic/react";
-import { useColorMode, Input, InputGroup, InputRightElement, Button, Container, Stack, FormControl, FormLabel, Flex, Icon, FormHelperText } from '@chakra-ui/react'
+import { useColorMode, Input, InputGroup, InputRightElement, Button, Stack, FormControl, FormLabel, Flex, FormHelperText } from '@chakra-ui/react'
 import React, { useState } from "react";
-import { eyedrop, eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+
 
 const Register: React.FC = () => {
     const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
     const [mail, setMail] = useState('')
     const [surname, setSurname] = useState('')
     const [name, setName] = useState('')
@@ -21,13 +21,7 @@ const Register: React.FC = () => {
 
     const colorMode = useColorMode();
 
-    const validateEmail = (email: String) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
+    const handleClick = () => setShow(!show)
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length < 6) {
@@ -82,11 +76,6 @@ const Register: React.FC = () => {
         setCode(e.target.value)
     }
 
-    const handleRegisterClick = () => {
-
-    }
-
-
     return (
         <IonPage>
             <IonContent>
@@ -129,13 +118,23 @@ const Register: React.FC = () => {
                                 </InputGroup>
                                 <FormHelperText color={"red.500"}>{errors.password}</FormHelperText>
                             </FormControl>
-                            <Button onClick={handleRegisterClick} isDisabled={Object.values(errors).filter(e => e!=="").length !== 0}>Registrieren</Button>
+                            <Button>Registrieren</Button>
                         </Stack>
                     </Stack>
+
                 </Flex>
             </IonContent>
         </IonPage>
     );
+};
+
+
+export const validateEmail = (email: String) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
 };
 
 export default Register;
