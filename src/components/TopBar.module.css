@@ -1,0 +1,27 @@
+.logo {
+    width: 3rem;
+}
+
+.toolbar {
+    display: grid;
+    width: 100%;
+    padding: 1em;
+    grid-template-areas: "left center right";
+    grid-template-columns: max-content 1fr max-content;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
+.left {
+    grid-area: left;
+}
+
+.center {
+    grid-area: center;
+}
+
+.right {
+    grid-area: right;
+}

@@ -3,6 +3,14 @@ img {
 }
 
 .logo {
-    width: 2em;
-    aspect-ratio: 1 / 1;
+    height: 3rem;
+    align-items: end;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
 }
