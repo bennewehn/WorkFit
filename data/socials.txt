@@ -35,9 +35,9 @@ Sebastian Köhler:
 
 
 Steffen Weiffenbach:
-  LinkedIn:
-  GitHub:
-  Email:
+  LinkedIn: https://www.linkedin.com/in/steffen-weiffenbach-5b7490220/
+  GitHub: https://github.com/Cornslakes
+  Email: steffen.weiffenbach@gmx.de
 
 
 Till Heiner:
