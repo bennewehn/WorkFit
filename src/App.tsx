@@ -35,6 +35,8 @@ import './theme/variables.css';
 
 import { ChakraProvider } from '@chakra-ui/react'
 
+import Register from './pages/Register'
+
 setupIonicReact();
 
 const App: React.FC = () => (
@@ -43,6 +45,9 @@ const App: React.FC = () => (
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
+            <Route exact path="/register">
+              <Register />
+            </Route>
             <Route exact path="/home">
               <Home />
             </Route>
