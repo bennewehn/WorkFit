@@ -41,12 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $compId = $statement->fetch()['compID'];
         $statement = $pdo->prepare("SELECT User.name, User.surname, User.balance FROM User
                                     WHERE User.compID = ?
-                                    ORDER BY EventUsers.balance DESC;");
+                                    ORDER BY User.balance DESC;");
         $statement->execute(array($compId));
     }
     else {
         $statement = $pdo->prepare("SELECT User.name, User.surname, User.balance FROM User
-                                    ORDER BY EventUsers.balance DESC;");
+                                    ORDER BY User.balance DESC;");
         $statement->execute();
     }
     while($row = $statement->fetch()) {
