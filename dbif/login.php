@@ -20,6 +20,7 @@ require_once 'jwt_utils.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Authorization");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// get posted data
