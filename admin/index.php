@@ -2,7 +2,7 @@
 
 /* Parameters ------------------------------------------- */
 $code_cost = 1;                                             // Cost of one code
-$disziplinen = array('Laufen', 'Inliner', 'Schwimmen', 'Radfahren');
+$disziplinen = array('Laufen', 'Joggen', 'Inliner', 'Schwimmen', 'Radfahren');
 /* Parameters end */
 
 session_start();
@@ -277,9 +277,9 @@ function event_list() {
                 <span>Beschreibung: " . $row['description'] . "</span><br>
                 <span>Bevorzugte Disziplin: " . $row['disciplines'] . "</span><br>
                 <span>Beteiligte Firmen: ";
-                $statement = $pdo->prepare("SELECT Company.*, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
-                                            WHERE EventCompanies.eventId = ?;");
-                $statement->execute(array($row['eventId']));
+                $sstatement = $pdo->prepare("SELECT Company.*, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
+                                             WHERE EventCompanies.eventId = ?;");
+                $sstatement->execute(array($row['eventId']));
                 while($row2 = $statement->fetch()) {
                     if($row2['agreed']) {
                         $agreed = 'agreed';
