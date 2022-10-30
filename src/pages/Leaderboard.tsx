@@ -1,8 +1,9 @@
 import LoaderboardUser from "../components/LeaderBoardUser";
-import {Divider, Text} from "@chakra-ui/react";
+import {Divider, Heading, Text} from "@chakra-ui/react";
 import {IonContent, IonPage} from "@ionic/react";
 import {useContext, useEffect, useState} from "react";
 import {TokenContext} from "../loginContext";
+import TopBar from "../components/TopBar";
 
 const Loaderboard = () => {
 
@@ -25,8 +26,9 @@ const Loaderboard = () => {
 
     return (<IonPage>
         <IonContent fullscreen>
-            <div style={{paddingInline: ".4em"}}>
-                <Text fontSize={"4xl"} as="b" paddingBlock={"0.4em"}>Leaderboard</Text>
+            <TopBar/>
+            <div style={{paddingInline: ".7em"}}>
+                <Heading fontSize="4xl" as="h2" paddingBlock={"0.4em"}>Leaderboard</Heading>
                 {data.map((user, idx, arr) => <>
                     <LoaderboardUser key={idx} placement={idx + 1}
                                      name={user.firstname}
