@@ -1,5 +1,4 @@
 import { IonContent, IonPage } from '@ionic/react';
-import './Home.css';
 import LoaderboardUser from '../components/LeaderBoardUser';
 
 const Loaderboard = () => {
