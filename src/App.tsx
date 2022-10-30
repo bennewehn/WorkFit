@@ -35,6 +35,9 @@ import "./theme/variables.css";
 
 import {ChakraProvider, extendTheme, type ThemeConfig} from "@chakra-ui/react";
 
+import Register from './pages/Register'
+import Login from "./pages/Login";
+
 setupIonicReact();
 
 
@@ -53,6 +56,12 @@ const App: React.FC = () => (
             <IonReactRouter>
                 <IonTabs>
                     <IonRouterOutlet>
+                        <Route exact path="/login">
+                            <Login/>
+                        </Route>
+                        <Route exact path="/register">
+                            <Register/>
+                        </Route>
                         <Route exact path="/home">
                             <Home/>
                         </Route>

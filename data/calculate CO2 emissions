@@ -1,0 +1,6 @@
+Durchschnittsverbrauch Benziner 2020 7,7L pro 100km
+Durchschnittsverbrauch Diesel 2020 6,8L pro 100km
+
+Konstante: 	3.31 kg CO2/l
+
+Masse CO2 = Gesamtstrecke * Verbrauch (Durchschnitt) * Konstante
