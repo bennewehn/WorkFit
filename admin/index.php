@@ -277,10 +277,13 @@ function event_list() {
                 <span>Beschreibung: " . $row['description'] . "</span><br>
                 <span>Bevorzugte Disziplin: " . $row['disciplines'] . "</span><br>
                 <span>Beteiligte Firmen: ";
-                $sstatement = $pdo->prepare("SELECT Company.*, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
+                $fstatement = $pdo->prepare("SELECT Company.name, Company.companyId, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
                                              WHERE EventCompanies.eventId = ?;");
-                $sstatement->execute(array($row['eventId']));
-                while($row2 = $statement->fetch()) {
+                $fstatement->execute(array($row['eventid']));
+                while($row2 = $fstatement->fetch()) {
+                    if($row2['companyId'] == $_SESSION['companyId']) {
+                        continue;                           // Unternehmen selbst nicht mit anzeigen
+                    }
                     if($row2['agreed']) {
                         $agreed = 'agreed';
                     }
