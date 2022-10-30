@@ -1,7 +1,7 @@
 <?php
 
 // Login
-// Supply via POST: useremail, code, password
+// Supply via POST: useremail, password
 
 /* Parameters ------------------------------------------- */
 $key_expire_s = 180;                                       // Nach wie vielen Sekunden der Code abläuft
@@ -34,9 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if($statement->rowCount() <= 0 || !password_verify($data->password, $row['password'])) {
 		echo json_encode(array('error' => 'Invalid user')); // User existerit nicht oder Passwort falsch
 	} else {
+        //$statement = $pdo->prepare("SELECT Codes.enabled FROM Codes INNER JOIN User ON Codes.userId = User.userId
+        //                            WHERE User.email = ? AND Codes.code = ?;");
         $statement = $pdo->prepare("SELECT Codes.enabled FROM Codes INNER JOIN User ON Codes.userId = User.userId
-                                    WHERE User.email = ? AND Codes.code = ?;");
-        $statement->execute(array($data->useremail, $data->code));
+                                    WHERE User.email = ?;"); // Code not needed, can be derived from userId
+        $statement->execute(array($data->useremail));
         $row = $statement->fetch();
         if(!isset($row['enabled']) || $row['enabled'] != 1) {
             echo json_encode(array('error' => "Code invalid or disabled"));

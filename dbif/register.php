@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->execute(array($data->code));
     $row = $statement->fetch();
     if(isset($row['password']) && $row['password'] !== NULL) { // Registration was already called
-        die(json_encode(array('success' => false, 'error' => 'User already registered')));
+        die(json_encode(array('success' => 'false', 'error' => 'User already registered')));
     }
     if($statement->rowCount() <= 0 || !isset($row['enabled']) || $row['enabled'] != 1) {
         // Der Code existiert nicht oder die Firma hat die Rechnung nicht bezahlt
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $instatement->execute(array("email" => $data->email, "password" => $password, "userId" => $row['userId']));
         }
         catch(Exception $e) {
-            die(json_encode(array('success' => false, 'error' => 'Database access failed')));
+            die(json_encode(array('success' => 'false', 'error' => 'Database access failed')));
         }
         $result = true;
     }
@@ -52,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $headers = array('alg'=>'HS256','typ'=>'JWT');
         $payload = array('email'=>$data->email, 'exp'=>(time() + $key_expire_s));
         $jwt = generate_jwt($headers, $payload);
-		echo json_encode(array('success' => true, 'token' => $jwt));
+		echo json_encode(array('success' => 'true', 'token' => $jwt));
 	} else {
-		echo json_encode(array('success' => false, 'error' => 'Wrong or disabled Code entered'));
+		echo json_encode(array('success' => 'false', 'error' => 'Wrong or disabled Code entered'));
 	}
 }
 
