@@ -1,7 +1,7 @@
 <?php
 
 // Login
-// Supply via POST: email, code
+// Supply via POST: email, code, password
 
 /* Parameters ------------------------------------------- */
 $key_expire_s = 180;                                       // Nach wie vielen Sekunden der Code abläuft
