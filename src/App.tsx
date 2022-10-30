@@ -41,6 +41,7 @@ import WorkoutList from "./pages/WorkoutList";
 import {TokenContext} from "./loginContext";
 import {useState} from "react";
 import Logout from "./pages/Logout";
+import Settings from "./pages/Settings";
 
 setupIonicReact();
 
@@ -52,7 +53,11 @@ const config: ThemeConfig = {
 };
 
 // 3. extend the theme
-const theme = extendTheme({config});
+const theme = extendTheme({config, colors: {
+    brand: {
+        100: "#1e6bd0"
+    },
+    }});
 
 const App: React.FC = () => {
 
@@ -70,6 +75,9 @@ const App: React.FC = () => {
                     </Route>
                     <Route exact path="/logout">
                         <Logout/>
+                    </Route>
+                    <Route exact path="/settings">
+                        <Settings/>
                     </Route>
                     <Route exact path="/app">
                         <IonApp>
