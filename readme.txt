@@ -7,7 +7,7 @@ font: roboto (https://fonts.google.com/specimen/Roboto?category=Sans+Serif&previ
 Repräsentative Webseite: https://public.etazeta.dev/
 
 -- Nutzer Webapp --
-APK-Download auf o.g. Webseite
+APK-Download: https://github.com/FireBlaze9311/WorkFit/releases/tag/indev
 Username: mustermann@test.de
 Passwort: reviewpass
 
