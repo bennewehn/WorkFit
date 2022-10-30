@@ -2,6 +2,7 @@
 
 // Get array of user lastname, firstname and score pairs globally.
 //  The scores are not related to events
+// Supply useremail to restrict output to same company
 
 // Connect to database
 $db_host_name = 'db5010643227.hosting-data.io';
@@ -34,9 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $users = array();
     // Alle Events abrufen, in die user_comp involviert ist (nur wo die Firma zugesagt hat)
     //  und die schon gestartet wurden und noch laufen
-    $sql = "SELECT User.name, User.surname, User.balance FROM User
-            ORDER BY EventUsers.balance DESC;";
-    foreach($pdo->query($sql) as $row) {
+    if(isset($data->useremail) && strlen(trim($data->useremail)) > 0) {
+        $statement = $pdo->prepare("SELECT compID FROM User WHERE email = ?;");
+        $statement->execute(array($data->useremail));
+        $compId = $statement->fetch()['compID'];
+        $statement = $pdo->prepare("SELECT User.name, User.surname, User.balance FROM User
+                                    WHERE User.compID = ?
+                                    ORDER BY EventUsers.balance DESC;");
+        $statement->execute(array($compId));
+    }
+    else {
+        $statement = $pdo->prepare("SELECT User.name, User.surname, User.balance FROM User
+                                    ORDER BY EventUsers.balance DESC;");
+        $statement->execute();
+    }
+    while($row = $statement->fetch()) {
         $user = array();
         $user["firstname"] = $row['name'];
         $user["lastname"] = $row['surname'];

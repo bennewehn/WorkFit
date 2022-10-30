@@ -1,6 +1,7 @@
 <?php
 
 // Get array of user lastname, firstname and score pairs for given eventId
+// Supply useremail to restrict output to same company
 
 // Connect to database
 $db_host_name = 'db5010643227.hosting-data.io';
@@ -33,14 +34,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $users = array();
     // Alle Events abrufen, in die user_comp involviert ist (nur wo die Firma zugesagt hat)
     //  und die schon gestartet wurden und noch laufen
-    $statement = $pdo->prepare("SELECT User.name, User.surname, EventUsers.balance FROM EventUsers
-                                INNER JOIN User ON EventUsers.userId = User.userId
-                                WHERE EventUsers.eventId = ? ORDER BY EventUsers.balance DESC;");
-    try {
-        $statement->execute(array($data->eventId));
+    if(isset($data->useremail) && strlen(trim($data->useremail)) > 0) {
+        $statement = $pdo->prepare("SELECT compID FROM User WHERE email = ?;");
+        $statement->execute(array($data->useremail));
+        $compId = $statement->fetch()['compID'];
+        $statement = $pdo->prepare("SELECT User.name, User.surname, EventUsers.balance FROM EventUsers
+                                    INNER JOIN User ON EventUsers.userId = User.userId
+                                    WHERE EventUsers.eventId = ? AND User.compID = ? ORDER BY EventUsers.balance DESC;");
+        try {
+            $statement->execute(array($data->eventId, $compId));
+        }
+        catch(Exception $e) {
+            die(json_encode(array("error" => "Invalid eventId")));
+        }
     }
-    catch(Exception $e) {
-        die(json_encode(array("error" => "Invalid eventId")));
+    else {
+        $statement = $pdo->prepare("SELECT User.name, User.surname, EventUsers.balance FROM EventUsers
+                                    INNER JOIN User ON EventUsers.userId = User.userId
+                                    WHERE EventUsers.eventId = ? ORDER BY EventUsers.balance DESC;");
+        try {
+            $statement->execute(array($data->eventId));
+        }
+        catch(Exception $e) {
+            die(json_encode(array("error" => "Invalid eventId")));
+        }
     }
     while($row = $statement->fetch()) {
         $user = array();
