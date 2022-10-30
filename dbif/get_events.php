@@ -16,7 +16,8 @@ $pdo = new PDO("mysql:host=$db_host_name;dbname=$database",
 require_once 'jwt_utils.php';                               // JWT Authentication
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Authorization");
 
 $bearer_token = get_bearer_token();
 
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->execute(array($user_comp));
     while($row = $statement->fetch()) {
         $event = array();
+        $event["eventId"] = $row['eventid'];
         $event["name"] = $row['name'];
         $event["description"] = $row['description'];
         $event["disciplines"] = $row['disciplines'];

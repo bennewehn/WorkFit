@@ -15,7 +15,8 @@ $pdo = new PDO("mysql:host=$db_host_name;dbname=$database",
 require_once 'jwt_utils.php';                               // JWT Authentication
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Authorization");
 
 $bearer_token = get_bearer_token();
 

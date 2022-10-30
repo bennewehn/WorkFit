@@ -1,7 +1,7 @@
 <?php
 
 // Login
-// Supply via POST: email, code, password
+// Supply via POST: useremail, code, password
 
 /* Parameters ------------------------------------------- */
 $key_expire_s = 180;                                       // Nach wie vielen Sekunden der Code abläuft
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	//$statement = "SELECT * FROM User WHERE email = '" . mysqli_real_escape_string($dbConn, $data->username) . "' AND password = '" . mysqli_real_escape_string($dbConn, $data->password) . "' LIMIT 1";
 	$statement = $pdo->prepare("SELECT * FROM User WHERE email = ?");
-    $statement->execute(array($data->email));
+    $statement->execute(array($data->useremail));
     $row = $statement->fetch();
 	
 	if($statement->rowCount() <= 0 || !password_verify($data->password, $row['password'])) {
