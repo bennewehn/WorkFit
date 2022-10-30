@@ -1,4 +1,4 @@
-import {Redirect, Route} from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import {
     IonApp,
     IonIcon,
@@ -9,8 +9,8 @@ import {
     IonTabs,
     setupIonicReact
 } from "@ionic/react";
-import {IonReactRouter} from "@ionic/react-router";
-import {calendarOutline, home, trophyOutline} from "ionicons/icons";
+import { IonReactRouter } from "@ionic/react-router";
+import { calendarOutline, home, trophyOutline } from "ionicons/icons";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import Leaderboard from "./pages/Loaderboard";
@@ -33,10 +33,13 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import {ChakraProvider, extendTheme, type ThemeConfig} from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
 import Register from './pages/Register'
 import Login from "./pages/Login";
+import WorkoutList from "./pages/WorkoutList";
+import { TokenContext } from "./loginContext";
+import { useState } from "react";
 
 setupIonicReact();
 
@@ -48,50 +51,59 @@ const config: ThemeConfig = {
 };
 
 // 3. extend the theme
-const theme = extendTheme({config});
+const theme = extendTheme({ config });
 
-const App: React.FC = () => (
-    <ChakraProvider theme={theme}>
-        <IonApp>
-            <IonReactRouter>
-                <IonTabs>
-                    <IonRouterOutlet>
-                        <Route exact path="/login">
-                            <Login/>
-                        </Route>
-                        <Route exact path="/register">
-                            <Register/>
-                        </Route>
-                        <Route exact path="/home">
-                            <Home/>
-                        </Route>
-                        <Route exact path="/events">
-                            <Events/>
-                        </Route>
-                        <Route path="/leaderboard">
-                            <Leaderboard/>
-                        </Route>
-                        <Route exact path="/">
-                            <Redirect to="/home"/>
-                        </Route>
-                    </IonRouterOutlet>
-                    <IonTabBar slot="bottom">
-                        <IonTabButton tab="home" href="/home">
-                            <IonIcon icon={home}/>
-                            <IonLabel>Home</IonLabel>
-                        </IonTabButton>
-                        <IonTabButton tab="events" href="/events">
-                            <IonIcon icon={calendarOutline}/>
-                            <IonLabel>Events</IonLabel>
-                        </IonTabButton>
-                        <IonTabButton tab="leaderboard" href="/leaderboard">
-                            <IonIcon icon={trophyOutline}/>
-                            <IonLabel>Leaderboard</IonLabel>
-                        </IonTabButton>
-                    </IonTabBar>
-                </IonTabs>
-            </IonReactRouter>
-        </IonApp>
+const App: React.FC = () => {
+
+    const [token, setToken] = useState("")
+
+    return <ChakraProvider theme={theme}>
+        <TokenContext.Provider value={{token, setToken}}>
+            <IonApp>
+                <IonReactRouter>
+                    <IonTabs>
+                        <IonRouterOutlet>
+                            <Route exact path="/workouts">
+                                <WorkoutList />
+                            </Route>
+                            <Route exact path="/login">
+                                <Login />
+                            </Route>
+                            <Route exact path="/register">
+                                <Register />
+                            </Route>
+                            <Route exact path="/home">
+                                <Home />
+                            </Route>
+                            <Route exact path="/events">
+                                <Events />
+                            </Route>
+                            <Route path="/leaderboard">
+                                <Leaderboard />
+                            </Route>
+                            <Route exact path="/">
+                                <Redirect to="/home" />
+                            </Route>
+                        </IonRouterOutlet>
+                        <IonTabBar slot="bottom">
+                            <IonTabButton tab="home" href="/home">
+                                <IonIcon icon={home} />
+                                <IonLabel>Home</IonLabel>
+                            </IonTabButton>
+                            <IonTabButton tab="events" href="/events">
+                                <IonIcon icon={calendarOutline} />
+                                <IonLabel>Events</IonLabel>
+                            </IonTabButton>
+                            <IonTabButton tab="leaderboard" href="/leaderboard">
+                                <IonIcon icon={trophyOutline} />
+                                <IonLabel>Leaderboard</IonLabel>
+                            </IonTabButton>
+                        </IonTabBar>
+                    </IonTabs>
+                </IonReactRouter>
+            </IonApp>
+
+        </TokenContext.Provider>
     </ChakraProvider>
-);
+};
 export default App;

@@ -45,8 +45,7 @@ const Events: React.FC = () => {
             dbLogin({
                 "useremail": "martin.landsiedel@gmail.com",
                 "password": "password",
-                "code": 4
-            }).then(({token}) => getEvents(token)).then((value) => setData(value));
+            }).then(({token}) => getEvents(token!)).then((value) => setData(value));
         }, []);
         return (
             <IonPage>

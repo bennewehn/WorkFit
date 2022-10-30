@@ -3,18 +3,20 @@ import { IonPage } from "@ionic/react";
 import { useColorMode, Input, InputGroup, InputRightElement, Button, Stack, FormControl, FormLabel, Flex, FormHelperText } from '@chakra-ui/react'
 import React, { useState } from "react";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
-
+import { useToast } from '@chakra-ui/react'
 
 const Register: React.FC = () => {
     const [show, setShow] = useState(false)
     const [mail, setMail] = useState('')
-    const [surname, setSurname] = useState('')
-    const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [code, setCode] = useState('')
 
+    const toast = useToast()
+
     const errorInit = {
-        password: '', email: '', name: '', surname: '', code: ''
+        password: 'Passwort muss min. 6 Zeichen sein.',
+        email: 'E-Mail Adresse wird benötigt.',
+        code: 'Code wird benötigt.'
     };
 
     const [errors, setErrors] = useState(errorInit);
@@ -46,25 +48,7 @@ const Register: React.FC = () => {
         setMail(e.target.value)
     }
 
-    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value === "") {
-            setErrors({ ...errors, name: "Vorname wird benötigt." })
-        }
-        else {
-            setErrors({ ...errors, name: "" })
-        }
-        setName(e.target.value)
-    }
 
-    const handleSurname = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value === "") {
-            setErrors({ ...errors, surname: "Nachname wird benötigt." })
-        }
-        else {
-            setErrors({ ...errors, surname: "" })
-        }
-        setSurname(e.target.value)
-    }
 
     const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value === "") {
@@ -74,6 +58,54 @@ const Register: React.FC = () => {
             setErrors({ ...errors, code: "" })
         }
         setCode(e.target.value)
+    }
+
+
+    function register() {
+        return new Promise<{ success: boolean, error?: string, token?: string }>((resolve, reject) => {
+
+            const raw = JSON.stringify({
+                "email": mail,
+                "password": password,
+                "code": code
+            });
+
+
+            fetch("https://etazeta.dev/WorkFit/WorkFit/dbif/register.php", {
+                method: "POST",
+                body: raw,
+                redirect: "follow"
+            })
+                .then(response => response.json())
+                .then(result => resolve(result))
+                .catch(error => reject(error));
+        });
+    }
+
+
+    const handleRegister = async () => {
+        const res = await register()
+        if (res.success) {
+            toast({
+                title: 'Account wurde erstellt.',
+                description: "Der Account wurde erfolgreich erstellt.",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+            console.log(res.token)
+        }
+        else {
+            toast.closeAll()
+            toast({
+                title: 'Fehler.',
+                description: res.error,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+            console.log(res.error)
+        }
     }
 
     return (
@@ -88,22 +120,12 @@ const Register: React.FC = () => {
                                 <Input placeholder="max.mustermann@gmail.com" onChange={handleEMailChange} />
                                 <FormHelperText color={"red.500"}>{errors.email}</FormHelperText>
                             </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel>Vorname</FormLabel>
-                                <Input placeholder="Max" onChange={handleNameChange} />
-                                <FormHelperText color={"red.500"}>{errors.name}</FormHelperText>
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel>Nachname</FormLabel>
-                                <Input placeholder="Mustermann" onChange={handleSurname} />
-                                <FormHelperText color={"red.500"}>{errors.surname}</FormHelperText>
-                            </FormControl>
                             <FormControl isRequired >
                                 <FormLabel>Code</FormLabel>
                                 <Input onChange={handleCodeChange} />
                                 <FormHelperText color={"red.500"}>{errors.code}</FormHelperText>
                             </FormControl>
-                            <FormControl isInvalid={errors.password !== ""} isRequired>
+                            <FormControl isRequired>
                                 <FormLabel>Passwort</FormLabel>
                                 <InputGroup>
                                     <Input
@@ -118,10 +140,9 @@ const Register: React.FC = () => {
                                 </InputGroup>
                                 <FormHelperText color={"red.500"}>{errors.password}</FormHelperText>
                             </FormControl>
-                            <Button>Registrieren</Button>
+                            <Button onClick={handleRegister} isDisabled={Object.values(errors).filter(e => e !== "").length !== 0}>Registrieren</Button>
                         </Stack>
                     </Stack>
-
                 </Flex>
             </IonContent>
         </IonPage>

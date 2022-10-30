@@ -1,8 +1,11 @@
-import { Button, Flex, FormControl, FormHelperText, FormLabel, Input, InputGroup, InputRightElement, Stack, useColorMode } from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormHelperText, FormLabel, Input, InputGroup, InputRightElement, Stack, useColorMode, useToast } from "@chakra-ui/react";
 import { IonContent, IonIcon, IonPage } from "@ionic/react";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { useState } from "react";
 import { validateEmail } from "./Register";
+import loginDb from '../utils/Login'
+import { TokenContext } from "../loginContext";
+import { useHistory } from 'react-router-dom'
 
 const Login: React.FC = () => {
 
@@ -12,9 +15,14 @@ const Login: React.FC = () => {
 
     const colorMode = useColorMode();
 
+    const history = useHistory();
+
     const errorInit = {
-        password: '', email: ''
+        password: '',
+        email: ''
     };
+
+    const toast = useToast()
 
     const handleClick = () => setShow(!show)
 
@@ -45,38 +53,61 @@ const Login: React.FC = () => {
 
     const [errors, setErrors] = useState(errorInit);
 
+    const handleLogin = async (setToken: (value: string) => void) => {
+        const token = await loginDb({ password, useremail: mail })
+        if (token.token !== undefined) {
+            setToken(token.token);
+            history.push("/");
+        }
+        else {
+            toast.closeAll();
+            toast({
+                title: 'Fehler.',
+                description: token.error,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+
+        console.log(token)
+    }
+
     return (
         <IonPage>
-            <IonContent>
-                <Flex direction="column" justifyContent="center" height={"100%"} maxWidth={"40rem"} margin={"auto"}>
-                    <Stack m={10}>
-                        <img style={{ marginBottom: "5vh" }} src={colorMode.colorMode === "light" ? "assets/images/logo_with_text.png" : "assets/images/logo_with_text_white.png"}></img>
-                        <Stack spacing={3} paddingInline={"5%"}>
-                            <FormControl isRequired>
-                                <FormLabel>E-Mail</FormLabel>
-                                <Input placeholder="max.mustermann@gmail.com" onChange={handleEMailChange} />
-                                <FormHelperText color={"red.500"}>{errors.email}</FormHelperText>
-                            </FormControl>
-                            <FormControl isInvalid={errors.password !== ""} isRequired>
-                                <FormLabel>Passwort</FormLabel>
-                                <InputGroup>
-                                    <Input
-                                        type={show ? 'text' : 'password'}
-                                        onChange={handlePasswordChange}
-                                    />
-                                    <InputRightElement width='3rem'>
-                                        <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                            {show ? <IonIcon icon={eyeOutline} /> : <IonIcon icon={eyeOffOutline} />}
-                                        </Button>
-                                    </InputRightElement>
-                                </InputGroup>
-                                <FormHelperText color={"red.500"}>{errors.password}</FormHelperText>
-                            </FormControl>
-                            <Button>Login</Button>
+            <TokenContext.Consumer>
+                {({ setToken }) => <IonContent>
+                    <Flex direction="column" justifyContent="center" height={"100%"} maxWidth={"40rem"} margin={"auto"}>
+                        <Stack m={10}>
+                            <img style={{ marginBottom: "5vh" }} src={colorMode.colorMode === "light" ? "assets/images/logo_with_text.png" : "assets/images/logo_with_text_white.png"}></img>
+                            <Stack spacing={3} paddingInline={"5%"}>
+                                <FormControl isRequired>
+                                    <FormLabel>E-Mail</FormLabel>
+                                    <Input placeholder="max.mustermann@gmail.com" onChange={handleEMailChange} />
+                                    <FormHelperText color={"red.500"}>{errors.email}</FormHelperText>
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Passwort</FormLabel>
+                                    <InputGroup>
+                                        <Input
+                                            type={show ? 'text' : 'password'}
+                                            onChange={handlePasswordChange}
+                                        />
+                                        <InputRightElement width='3rem'>
+                                            <Button h='1.75rem' size='sm' onClick={handleClick}>
+                                                {show ? <IonIcon icon={eyeOutline} /> : <IonIcon icon={eyeOffOutline} />}
+                                            </Button>
+                                        </InputRightElement>
+                                    </InputGroup>
+                                    <FormHelperText color={"red.500"}>{errors.password}</FormHelperText>
+                                </FormControl>
+                                <Button onClick={() => handleLogin(setToken)}>Login</Button>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                </Flex>
-            </IonContent>
+                    </Flex>
+                </IonContent>
+                }
+            </TokenContext.Consumer>
         </IonPage>
     )
 }

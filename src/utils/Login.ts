@@ -1,7 +1,7 @@
-type LoginData = {useremail: string, password: string, code: number};
+type LoginData = {useremail: string, password: string};
 
 export default function login(loginData: LoginData) {
-    return new Promise<{ token: string }>((resolve, reject) => {
+    return new Promise<{ token?: string, error?: string }>((resolve, reject) => {
 
         const raw = JSON.stringify(loginData);
 
