@@ -3,7 +3,7 @@ import { Heading, Text, Box, Button, useControllableProp, useControllableState }
 import { Geolocation, Position } from '@capacitor/geolocation';
 import TopBar from "../components/TopBar";
 import {addOutline} from "ionicons/icons";
-import { useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import React from 'react';
 import { Chart as ChartJS, 
   ArcElement, 
@@ -15,6 +15,7 @@ import { Chart as ChartJS,
   LineElement,
   Title, } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
+import { sign } from "crypto";
 
 ChartJS.register(ArcElement, Tooltip, Legend,
   CategoryScale,
@@ -69,6 +70,12 @@ const lineData = {
   ],
 };
 
+let crtDistance = 0;
+let newLatitude = 0;
+let lastLatitude = 0;
+let newLongitude = 0;
+let lastLongitude = 0;
+
 const lineOptions = {
   responsive: true,
   interaction: {
@@ -102,17 +109,25 @@ let isExercising = false;
 
 const Home: React.FC = () => {
 
+  const interval = useRef<NodeJS.Timeout>();
   function startExercise()
   {
     console.log(isExercising);
     if (!isExercising)
     {
       isExercising = true;
+      interval.current = setInterval(() => {
+        timeCount += 1;
+        setTime(timeCount);
+        console.log(timeCount);
+      }, 1000);
       setExecBool(true);
     }
     else
     {
       isExercising = false;
+      clearInterval(interval.current);
+      timeCount = 0;
       setExecBool(false);
     }
   }
@@ -122,17 +137,16 @@ const Home: React.FC = () => {
     {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
+      // nicht fertig
+      // lastLatitude = newLatitude;
+      // lastLongitude = newLongitude; 
+      // newLatitude = latitude;
+      // newLongitude = longitude;
+
+      // crtDistance += (6378.388 * Math.acos(Math.sin(newLatitude) * Math.sin(lastLatitude) + Math.cos(newLatitude) * Math.cos(lastLatitude) * Math.cos(newLongitude - lastLongitude)));
+      // setDistance(crtDistance);
     }
   });
-  if(isExercising)
-  {
-    const interval = setInterval(() => {
-      timeCount += 1;
-      setTime(timeCount);
-      console.log(timeCount);
-    }, 1000);
-    return () => clearInterval(interval); 
-  }
 }, [])
 
   const [distance, setDistance] = useControllableState({ defaultValue: 0 });
