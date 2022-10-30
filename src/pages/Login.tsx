@@ -57,7 +57,7 @@ const Login: React.FC = () => {
         const token = await loginDb({ password, useremail: mail })
         if (token.token !== undefined) {
             setToken(token.token);
-            history.push("/");
+            history.push("/app");
         }
         else {
             toast.closeAll();
@@ -102,6 +102,7 @@ const Login: React.FC = () => {
                                     <FormHelperText color={"red.500"}>{errors.password}</FormHelperText>
                                 </FormControl>
                                 <Button onClick={() => handleLogin(setToken)}>Login</Button>
+                                <Button alignSelf={"end"} onClick={() => history.push("/register")}>Noch kein Account?</Button>
                             </Stack>
                         </Stack>
                     </Flex>
