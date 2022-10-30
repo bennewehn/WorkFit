@@ -6,8 +6,9 @@ import styles from "./Events.module.css";
 import Event, {EventType} from "../components/Event";
 import {Button, Divider, Menu, MenuButton, MenuItem, MenuList} from "@chakra-ui/react";
 import {checkmark, chevronDownOutline} from "ionicons/icons";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import dbLogin from "../utils/Login";
+import useLogout from "../utils/Logout";
 
 
 function getEvents(token: string) {
@@ -17,11 +18,9 @@ function getEvents(token: string) {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
         const raw = JSON.stringify({
-            "useremail": "martin.landsiedel@gmail.com",
-            "password": "password",
-            "code": 4
+            "useremail": "antonpieper@gmx.de",
+            "password": "AntonPieper"
         });
-
 
         fetch("https://etazeta.dev/WorkFit/WorkFit/dbif/get_events.php", {
             method: "POST",
@@ -40,25 +39,37 @@ const Events: React.FC = () => {
         const emptyIcon = <div className={styles.oneEm}></div>;
         const checkmarkIcon = <IonIcon icon={checkmark}/>;
         const [data, setData] = useState<EventType[]>([]);
-        console.log(data);
+        const rawData = useRef<EventType[]>([]);
+        const logout = useLogout();
+
+        const onInput: (text: string) => void = (text) => {
+            console.log(rawData.current);
+            setData(rawData.current.filter((event) => event.name.includes(text)));
+        };
+
         useEffect(() => {
             dbLogin({
                 "useremail": "martin.landsiedel@gmail.com",
                 "password": "password",
-            }).then(({token}) => getEvents(token!)).then((value) => setData(value));
+            }).then(async ({token}) => {
+                if (!token) logout();
+                rawData.current =await getEvents(token!);
+                onInput("");
+            });
         }, []);
         return (
             <IonPage>
                 <IonContent fullscreen>
                     <TopBar fixed>
-                        <SearchBar/>
+                        <SearchBar onInput={onInput}/>
                     </TopBar>
                     <Menu>
-                        <MenuButton className={styles.filterMenu} as={Button}
+                        <MenuButton position="fixed" top="20" zIndex={999999} backdropFilter="blur(3rem)" margin=".5em"
+                                    as={Button}
                                     rightIcon={<IonIcon icon={chevronDownOutline}/>}>
                             {showOnlyMine ? "Meine Events" : "Alle Events"}
                         </MenuButton>
-                        <MenuList>
+                        <MenuList backgroundColor="var(--ion-background-color)">
                             <MenuItem onClick={() => setShowOnlyMine(true)}
                                       icon={showOnlyMine ? checkmarkIcon : emptyIcon}>Meine Events</MenuItem>
                             <MenuItem onClick={() => setShowOnlyMine(false)}

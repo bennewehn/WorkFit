@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                 {({ setToken }) => <IonContent>
                     <Flex direction="column" justifyContent="center" height={"100%"} maxWidth={"40rem"} margin={"auto"}>
                         <Stack m={10}>
-                            <img style={{ marginBottom: "5vh" }} src={colorMode.colorMode === "light" ? "assets/images/logo_with_text.png" : "assets/images/logo_with_text_white.png"}></img>
+                            <img alt="WorkFit Logo" style={{ marginBottom: "5vh" }} src={colorMode.colorMode === "light" ? "assets/images/logo_with_text.png" : "assets/images/logo_with_text_white.png"}></img>
                             <Stack spacing={3} paddingInline={"5%"}>
                                 <FormControl isRequired>
                                     <FormLabel>E-Mail</FormLabel>

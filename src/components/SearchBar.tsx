@@ -3,9 +3,12 @@ import {IonIcon} from "@ionic/react";
 import {search} from "ionicons/icons";
 import React from "react";
 
-const SearchBar: React.FC = () => (
+interface Props {
+    onInput: (text: string) => void;
+};
+const SearchBar: React.FC<Props> = ({onInput}) => (
     <InputGroup>
-        <Input placeholder="Search"/>
+        <Input placeholder="Search" onInput={(ev) => onInput((ev.target as HTMLInputElement).value)}/>
         <InputRightElement>
             <IonIcon icon={search}/>
         </InputRightElement>

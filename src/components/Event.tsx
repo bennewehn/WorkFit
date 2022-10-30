@@ -15,9 +15,9 @@ export interface EventType {
 
 function getIconForDiscipline(discipline: string) {
     switch (discipline) {
-        case "walking":
+        case "laufen":
             return <FaWalking/>;
-        case "running":
+        case "joggen":
             return <FaRunning/>;
         case "schwimmen":
             return <FaSwimmer/>;
