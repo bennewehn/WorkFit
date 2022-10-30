@@ -112,7 +112,9 @@ function codes_new_checkout() {
         <a href='index.php?a=new_codes'>Erneut versuchen</a>";
         return false;
     }
-    // TODO: Rechnung verschicken
+
+    // TODO: Rechnung verschicken / Lastschrift o.Ä.
+
     // Codes generieren, ggf neue Nutzer anlegen
     //$handle = fopen($_FILES['users']['tmp_name'], "r");
     //if ($handle) {                                          // Read new users line by line from file
@@ -138,6 +140,12 @@ function codes_new_checkout() {
                 $userid = $pdo->lastInsertId();
             }
             $cinsstatement->execute(array("userId" => $userid, "enabled" => 1)); // Codes are enabled as they are already paid
+            
+            // Maximal die Anzahl Nutzer registrieren, die die Firma bezahlt hat
+            $count += 1;
+            if($count > $_POST['number']) {
+                break;
+            }
         }
     //    fclose($handle);
     //}
