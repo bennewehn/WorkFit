@@ -1,4 +1,4 @@
-import {Redirect, Route} from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import {
     IonApp,
     IonIcon,
@@ -9,8 +9,8 @@ import {
     IonTabs,
     setupIonicReact
 } from "@ionic/react";
-import {IonReactRouter} from "@ionic/react-router";
-import {calendarOutline, home, trophyOutline} from "ionicons/icons";
+import { IonReactRouter } from "@ionic/react-router";
+import { calendarOutline, home, trophyOutline } from "ionicons/icons";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import Leaderboard from "./pages/Leaderboard";
@@ -33,13 +33,13 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import {ChakraProvider, extendTheme, type ThemeConfig} from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import WorkoutList from "./pages/WorkoutList";
-import {TokenContext} from "./loginContext";
-import {useState} from "react";
+import { TokenContext } from "./loginContext";
+import { useState } from "react";
 import Logout from "./pages/Logout";
 import Settings from "./pages/Settings";
 
@@ -53,63 +53,65 @@ const config: ThemeConfig = {
 };
 
 // 3. extend the theme
-const theme = extendTheme({config, colors: {
-    brand: {
-        100: "#1e6bd0"
-    },
-    }});
+const theme = extendTheme({
+    config, colors: {
+        brand: {
+            100: "#1e6bd0"
+        },
+    }
+});
 
 const App: React.FC = () => {
 
     const [token, setToken] = useState("");
 
     return <ChakraProvider theme={theme}>
-        <TokenContext.Provider value={{token, setToken}}>
+        <TokenContext.Provider value={{ token, setToken }}>
             <IonApp>
                 <IonReactRouter>
                     <Route exact path="/">
-                        <Login/>
+                        <Login />
                     </Route>
                     <Route exact path="/register">
-                        <Register/>
+                        <Register />
                     </Route>
                     <Route exact path="/logout">
-                        <Logout/>
-                    </Route>
-                    <Route exact path="/settings">
-                        <Settings/>
+                        <Logout />
                     </Route>
                     <Route exact path="/app">
                         <IonApp>
                             <IonReactRouter>
                                 <IonTabs>
                                     <IonRouterOutlet>
+                                        <Route exact path="/app/settings">
+                                            <Settings />
+                                        </Route>
                                         <Route exact path="/app/workouts">
-                                            <WorkoutList/>
+                                            <WorkoutList />
                                         </Route>
                                         <Route exact path="/app/home">
-                                            <Home/>
+                                            <Home />
                                         </Route>
-                                        <Route exact path="/app/events"> <Events/>
+                                        <Route exact path="/app/events"> <Events />
                                         </Route>
                                         <Route exact path="/app/leaderboard">
-                                            <Leaderboard/>
+                                            <Leaderboard />
                                         </Route>
                                         <Route exact path="/app">
-                                            <Redirect to="/app/home"/>
+                                            <Redirect to="/app/home" />
                                         </Route>
                                     </IonRouterOutlet>
                                     <IonTabBar slot="bottom">
                                         <IonTabButton tab="home" href="/app/home">
-                                            <IonIcon icon={home}/>
+                                            <IonIcon icon={home} />
                                             <IonLabel>Home</IonLabel>
                                         </IonTabButton>
                                         <IonTabButton tab="events" href="/app/events">
-                                            <IonIcon icon={calendarOutline}/>
+                                            <IonIcon icon={calendarOutline} />
                                             <IonLabel>Events</IonLabel>
                                         </IonTabButton>
                                         <IonTabButton tab="leaderboard" href="/app/leaderboard">
-                                            <IonIcon icon={trophyOutline}/>
+                                            <IonIcon icon={trophyOutline} />
                                             <IonLabel>Leaderboard</IonLabel>
                                         </IonTabButton>
                                     </IonTabBar>
