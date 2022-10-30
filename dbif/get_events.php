@@ -42,8 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $events = array();
     // Alle Events abrufen, in die user_comp involviert ist (nur wo die Firma zugesagt hat)
+    //  und die schon gestartet wurden und noch laufen
     $statement = $pdo->prepare("SELECT Events.* FROM Events INNER JOIN EventCompanies ON Events.eventid = EventCompanies.eventid
-                                WHERE EventCompanies.agreed = 1 AND EventCompanies.compId = ?;");
+                                WHERE EventCompanies.agreed = 1 AND EventCompanies.compId = ?
+                                AND Events.dstart >= NOW() AND Events.dend <= NOW();");
     $statement->execute(array($user_comp));
     while($row = $statement->fetch()) {
         $event = array();

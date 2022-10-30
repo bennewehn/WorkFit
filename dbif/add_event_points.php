@@ -32,6 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // get posted data
     $data = json_decode(file_get_contents("php://input", true));
     
+    // Prüfen, ob Event gestartet wurde und noch läuft
+    $statement = $pdo->prepare("SELECT COUNT(*) FROM Events WHERE eventId = ?
+                                AND dstart >= NOW() AND dend <= NOW()");
+    try {
+        $statement->execute(array($data->eventId));
+    }
+    catch(Exception $e) {
+        die(json_encode(array("error" => "Invalid eventId")));
+    }
+    if($statement->fetch() <= 0) {                          // Kein Event innerhalb der Zeitrange gefunden
+        die(json_encode(array("error" => "Event is currently not running")));
+    }
+
+    // Prüfen, ob Nutzer bereits am Event teilgenommen hat
     $statement = $pdo->prepare("SELECT COUNT(*) AS anzahl FROM EventUsers INNER JOIN User on EventUsers.userId = User.userId
                                 WHERE User.email = ?");
     try {
