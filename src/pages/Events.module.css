@@ -1,16 +1,14 @@
-img {
-    max-width: 100%;
-}
-
-.logo {
-    height: 3rem;
-    align-items: end;
-}
-
-.toolbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+    max-width: 40rem;
+    margin: auto;
     padding: 1em;
-    gap: 1em;
+}
+
+.oneEm {
+    width: 1em;
+}
+
+.filterMenu {
+    position: fixed;
+    top: 0;
 }

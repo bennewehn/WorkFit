@@ -1,0 +1,53 @@
+.container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    margin: 1rem;
+    padding: 1em;
+    cursor: pointer;
+    -moz-border-radius: .75rem;
+    -webkit-border-radius: .75rem;
+    border-radius: .75rem;
+    gap: 1em;
+}
+
+.container::before {
+    position: absolute;
+    content: "";
+    background-color: #fff1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 250ms ease-in-out;
+}
+
+.container:hover::before {
+    opacity: 1;
+}
+
+.icon {
+    font-size: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    margin: auto;
+    color: #1E6BD0;
+    border-radius: 50%;
+    background-color: #1E6BD022;
+}
+
+.eventDetails {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.moreInfo {
+    align-self: end;
+    justify-self: end;
+}

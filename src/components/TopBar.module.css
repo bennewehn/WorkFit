@@ -14,6 +14,13 @@
     margin-bottom: 1em;
 }
 
+.fixed {
+    position: sticky;
+    top: 0;
+    z-index: 999999;
+    background-color: var(--ion-background-color);
+}
+
 .left {
     grid-area: left;
 }
@@ -22,6 +29,6 @@
     grid-area: center;
 }
 
-.right {
+.avatar {
     grid-area: right;
 }

@@ -1,18 +1,20 @@
 import "./ExploreContainer.css";
 import styles from "./TopBar.module.css";
-import {Avatar} from "@chakra-ui/react";
+import {Avatar, useColorMode} from "@chakra-ui/react";
 
 interface ContainerProps {
+    fixed?: boolean
     children?: React.ReactNode;
 }
 
-const TopBar: React.FC<ContainerProps> = ({children}) => {
+const TopBar: React.FC<ContainerProps> = ({fixed, children}) => {
+    const currentColorMode = useColorMode();
     return (
-        <div className={styles.toolbar}>
-            <img className={`${styles.logo} ${styles.left}`} src="assets/images/logo.png" alt="Logo" width="1" height="1"/>
+        <nav className={`${styles.toolbar} ${fixed ? styles.fixed : ""}`}>
+            <img className={`${styles.logo} ${styles.left}`} src={currentColorMode.colorMode === "light" ? "assets/images/logo.png" : "assets/images/logo_white.png"} alt="Logo" width="1" height="1"/>
             <div className={styles.center}>{children}</div>
-            <Avatar className={styles.right}/>
-        </div>
+            <Avatar className={styles.avatar} onClick={()=>{}}/>
+        </nav>
     );
 };
 
