@@ -44,7 +44,7 @@ const Events: React.FC = () => {
 
         const onInput: (text: string) => void = (text) => {
             console.log(rawData.current);
-            setData(rawData.current.filter((event) => event.name.includes(text)));
+            setData(rawData.current.filter((event) => event.name.includes(text) || event.description.includes(text)));
         };
 
         useEffect(() => {
@@ -53,7 +53,7 @@ const Events: React.FC = () => {
                 "password": "password",
             }).then(async ({token}) => {
                 if (!token) logout();
-                rawData.current =await getEvents(token!);
+                rawData.current = await getEvents(token!);
                 onInput("");
             });
         }, []);
@@ -64,7 +64,7 @@ const Events: React.FC = () => {
                         <SearchBar onInput={onInput}/>
                     </TopBar>
                     <Menu>
-                        <MenuButton position="fixed" top="20" zIndex={999999} backdropFilter="blur(3rem)" margin=".5em"
+                        <MenuButton position="fixed" top="5em" zIndex={999999} backdropFilter="blur(3rem)" margin=".5em"
                                     as={Button}
                                     rightIcon={<IonIcon icon={chevronDownOutline}/>}>
                             {showOnlyMine ? "Meine Events" : "Alle Events"}
