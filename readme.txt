@@ -4,14 +4,14 @@ font: roboto (https://fonts.google.com/specimen/Roboto?category=Sans+Serif&previ
 
 
 === Review Zugangsdaten ===
-Repräsentative Website: https://public.etazeta.dev/
-
--- Unternehmensseite --
-URL: https://etazeta.dev/WorkFit/WorkFit/admin/index.php
-Username: review
-Passwort: reviewpass
+Repräsentative Webseite: https://public.etazeta.dev/
 
 -- Nutzer Webapp --
-APK-Download auf der Präsentationsseite
+APK-Download auf o.g. Webseite
 Username: mustermann@test.de
+Passwort: reviewpass
+
+-- Administrative Seite für Unternehmen --
+URL: https://etazeta.dev/WorkFit/WorkFit/admin/index.php
+Username: review
 Passwort: reviewpass
