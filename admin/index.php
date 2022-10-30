@@ -30,10 +30,10 @@ function login_form($title) {
                 <h2>$title</h2>
                 <form method='POST' action='index.php?a=login'>
                     <label for='username'>Nutzername: </label>
-                    <input type='text' name='username'>
+                    <input type='text' name='username' required>
                     <br>
                     <label for='password'>Passwort: </label>
-                    <input type='password' name='password'>
+                    <input type='password' name='password' required>
                     <br><br>
                     <input type='submit' value='Einloggen'>
                 </form>
@@ -87,11 +87,11 @@ function codes_new_form() {
                 <h2>Neue Codes erwerben</h2>
                 <form method='POST' action='index.php?a=new_codes_checkout'>
                     <label for='number'>Anzahl Codes: </label>
-                    <input type='number' name='number'>
+                    <input type='number' name='number' min='1' step='1' required>
                     <br>
                     <label for='users'>Mitarbeiter Namen (Format: Nachname,Vorname;): </label>
                     <!--<input type='file' name='users' accept='text'>-->
-                    <textarea name='users' rows='20' cols='100'>
+                    <textarea name='users' rows='20' cols='100' required>
                         Nachname, Vorname;
                         Nachname, Vorname;
                     </textarea>
@@ -125,7 +125,7 @@ function codes_new_checkout() {
         $lines = explode(';', $_POST['users']);
         //while (($line = fgets($handle)) !== false && $count < $_POST['number']) {
         foreach($lines as $line) {
-            if(strlen($line) == 0) {                        // Überspringe doppelte ';'
+            if(strlen(trim($line)) == 0) {                  // Überspringe doppelte ';' / Leere Einträge
                 continue;
             }
             $name = explode(',', $line, 2);
@@ -197,10 +197,10 @@ function event_new_form() {
                 <h2>Neues Event anlegen</h2>
                 <form method='POST' action='index.php?a=new_event_reg'>
                     <label for='name'>Event Name: </label>
-                    <input type='text' name='name'>
+                    <input type='text' name='name' required>
                     <br>
                     <label for='desc'>Event Beschreibung: </label>
-                    <textarea name='desc' rows='20' cols='100'>
+                    <textarea name='desc' rows='20' cols='100' style='white-space: pre-wrap;' required>
                         Enter event description here
                     </textarea>
                     <br>
@@ -223,6 +223,12 @@ function event_new_form() {
         echo "<option value='$comp_id'>$comp_name</option>";
     }
     echo "          </select>
+                    <br>
+                    <label for='dstart'>Startdatum: </label>
+                    <input type='date' name='dstart'>
+                    <br>
+                    <label for='dend'>Enddatum: </label>
+                    <input type='date' name='dend' required>
                     <br><br>
                     <input type='submit' value='Anlegen'>
                 </form>
@@ -247,8 +253,10 @@ function event_new() {
     $event['description'] = $_POST['desc'];
     $event['disziplin'] = $_POST['disziplin'];
     $event['initiatorComp'] = $_SESSION['companyId'];
-    $statement = $pdo->prepare("INSERT INTO Events (`name`, `description`, disciplines, initiatorComp)
-                                VALUES (:name, :description, :disziplin, :initiatorComp)");
+    $event['dstart'] = $_POST['dstart'];
+    $event['dend'] = $_POST['dend'];
+    $statement = $pdo->prepare("INSERT INTO Events (`name`, `description`, `disciplines`, `initiatorComp`, `dstart`, `dend`)
+                                VALUES (:name, :description, :disziplin, :initiatorComp, :dstart, :dend)");
     $statement->execute($event);
 
     $event_id = $pdo->lastInsertId();
@@ -269,12 +277,13 @@ function event_list() {
     
     // List every event where the Company is listed and the company agreed
     $statement = $pdo->prepare("SELECT Events.* FROM Events INNER JOIN EventCompanies ON Events.eventid = EventCompanies.eventid
-                                WHERE EventCompanies.agreed = 1 AND EventCompanies.compId = ?;");
+                                WHERE EventCompanies.agreed = 1 AND EventCompanies.compId = ? ORDER BY Events.dend DESC;");
     $statement->execute(array($_SESSION['companyId']));
     while($row = $statement->fetch()) {
         echo "<div style='border: 1px solid black'>
                 <span>Name: " . $row['name'] . "</span><br>
-                <span>Beschreibung: " . $row['description'] . "</span><br>
+                <span>Beschreibung: " . trim($row['description']) . "</span><br>
+                <span>Zeitraum: " . $row['dstart'] . " bis " . $row['dend'] . "</span><br>
                 <span>Bevorzugte Disziplin: " . $row['disciplines'] . "</span><br>
                 <span>Beteiligte Firmen: ";
                 $fstatement = $pdo->prepare("SELECT Company.name, Company.companyId, EventCompanies.agreed FROM EventCompanies INNER JOIN Company ON Company.companyId = EventCompanies.compId
