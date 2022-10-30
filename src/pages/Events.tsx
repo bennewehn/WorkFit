@@ -7,17 +7,7 @@ import Event, {EventType} from "../components/Event";
 import {Button, Divider, Menu, MenuButton, MenuItem, MenuList} from "@chakra-ui/react";
 import {checkmark, chevronDownOutline} from "ionicons/icons";
 import {useEffect, useState} from "react";
-
-const exampleTypes = [
-    "running",
-    "walking"
-];
-const exampleAssociations = [
-    {
-        code: 1231112,
-        company: "EDAG"
-    }
-];
+import dbLogin from "../utils/Login";
 
 
 function getEvents(token: string) {
@@ -45,26 +35,6 @@ function getEvents(token: string) {
     });
 }
 
-function login() {
-    return new Promise<{ token: string }>((resolve, reject) => {
-
-        const raw = JSON.stringify({
-            "useremail": "martin.landsiedel@gmail.com",
-            "password": "password",
-            "code": 4
-        });
-
-        fetch("https://etazeta.dev/WorkFit/WorkFit/dbif/login.php", {
-            method: "POST",
-            body: raw,
-            redirect: "follow"
-        })
-            .then(response => response.json())
-            .then(result => resolve(result))
-            .catch(error => reject(error));
-    });
-}
-
 const Events: React.FC = () => {
         const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
         const emptyIcon = <div className={styles.oneEm}></div>;
@@ -72,7 +42,11 @@ const Events: React.FC = () => {
         const [data, setData] = useState<EventType[]>([]);
         console.log(data);
         useEffect(() => {
-            login().then(({token}) => getEvents(token)).then((value)=>setData(value));
+            dbLogin({
+                "useremail": "martin.landsiedel@gmail.com",
+                "password": "password",
+                "code": 4
+            }).then(({token}) => getEvents(token)).then((value) => setData(value));
         }, []);
         return (
             <IonPage>
