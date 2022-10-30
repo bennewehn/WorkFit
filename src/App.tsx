@@ -13,7 +13,7 @@ import {IonReactRouter} from "@ionic/react-router";
 import {calendarOutline, home, trophyOutline} from "ionicons/icons";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
-import Leaderboard from "./pages/Loaderboard";
+import Leaderboard from "./pages/Leaderboard";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
