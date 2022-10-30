@@ -7,7 +7,7 @@ const Events: React.FC = () => {
         <IonPage>
             <IonContent fullscreen>
                 <TopBar>
-
+                    
                 </TopBar>
                 <main>
                     Test
