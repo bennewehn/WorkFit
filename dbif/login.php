@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if($statement->rowCount() <= 0 || !password_verify($data->password, $row['password'])) {
 		echo json_encode(array('error' => 'Invalid user')); // User existerit nicht oder Passwort falsch
 	} else {
-        $statement = $pdo->prepare("SELECT Codes.enabled FROM Codes INNER JOIN User ON Codes.userId = User.eventId
+        $statement = $pdo->prepare("SELECT Codes.enabled FROM Codes INNER JOIN User ON Codes.userId = User.userId
                                     WHERE User.email = ? AND Codes.code = ?;");
         $statement->execute(array($data->useremail, $data->code));
         $row = $statement->fetch();
