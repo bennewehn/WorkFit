@@ -15,7 +15,6 @@ import { Chart as ChartJS,
   LineElement,
   Title, } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
-import { sign } from "crypto";
 
 ChartJS.register(ArcElement, Tooltip, Legend,
   CategoryScale,
@@ -159,7 +158,7 @@ const Home: React.FC = () => {
                 <TopBar>
                 </TopBar>
                 <main>
-                  <Heading ml="1rem" mt="-1rem" size="lg">Guten Tag, NAME</Heading>
+                  <Heading ml="1rem" mt="-1rem" size="lg">Guten Tag, Max</Heading>
                   <div style={{width:"80%", marginLeft:"auto", marginTop:"-3rem", marginRight:"auto"}}>
                     <Doughnut data={data} options={options}/>
                   </div>
@@ -169,7 +168,7 @@ const Home: React.FC = () => {
                     <Line data={lineData} options={lineOptions}/>
                   </div>
                   <div style={{marginTop:"3rem"}}>
-                    <div style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", marginTop:"auto", marginBottom:"auto", alignContent:"space-around", border:"1px solid black"}}>
+                    <div style={{height:"100%", width:"100%", display:"flex", justifyContent:"center", marginTop:"auto", marginBottom:"auto", alignContent:"space-around"}}>
                       <Box borderRadius="lg" borderWidth='1px' bg='rgb(220, 220, 220, 1)' w='40%' p={2} color='white' marginLeft="auto" marginRight="auto" textAlign="center"><Text color='black'>Zeit: {time}s</Text></Box>
                       <Button onClick={() => startExercise()} colorScheme={exercisingBool ? "red" : "gray"}><IonIcon icon={addOutline}></IonIcon></Button>
                       <Box borderRadius="lg" borderWidth='1px' bg='rgb(220, 220, 220, 1)' w='40%' p={2} color='white' marginLeft="auto" marginRight="auto" textAlign="center"><Text color='black'>Distanz: {distance}km</Text></Box>
